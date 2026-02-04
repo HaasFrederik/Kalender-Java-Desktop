@@ -1,0 +1,6 @@
+erstelle klare topdown Container-Struktur fürs Front-End (JFrame - [JPanel,JPanel -  [JPanel,JPanel], ...,JPanel])
+-> potentiell Container-Klassen extenden für bessere Lesbarkeit/wiederverwertbares Layout-Setup
+extend Component-Klassen für Method-/Interactionhandling und bessere Lesbarkeit
+Components in Container packen
+Enums/Funktionsklassen für Method-/Interactionhandling
+Components und Funktionalitäten verbinden

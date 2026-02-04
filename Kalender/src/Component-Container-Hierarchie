@@ -1,0 +1,41 @@
+-> Unterklassen von JPanel für einmaliges Layout-setup
+
+mainFrame(JFrame)
+
+- Tagesübersicht(JPanel/SubFrame extends JPanel?)
+  - TagesLabel(JLabel) -> Wochentag und Datum
+  - HauptPanel(JPanel)
+    - Scrollbare Listen verschiedener Eintragsarten wie Todos, Deadlines, ... (JScrollPane)
+  - KnopfPanel(JPanel/ButtonPanel extends JPanel?)
+    - Knöpfe mit Funktionalitäten wie neuer Eintrag, ...
+
+- Eintragsübersicht(JPanel/Subframe)
+  - EintragsLabel(JLabel)
+  - HauptPanel(JPanel)
+    - Beschreibungstext(JTextArea)
+    - weitere Metadaten in JLabels?
+  - KnopfPanel(JPanel)
+    - Knöpfe für: bearbeiten, löschen, erledigt, schließen, ...
+
+- Tagwähler/Kalender(JPanel/Subframe)
+  - LabelPanel(JPanel)
+    - JahresLabel(JLabel, interaktiv)
+    - MonatsLabel(JLabel, interaktiv)
+    - Inhalt je nach ausgewählter Ansicht
+  - HauptPanel(JPanel)
+    - Tage(JLabel, interaktiv)
+    - Monate(JLabel, interaktiv)
+    - Jahre(JLabel, interaktiv)
+    - Inhalte je nach ausgewählter Ansicht
+  - KnopfPanel(JPanel)
+    - Knöpfe für: vor, zurück
+
+Dialogfenster: Eintrag erstellen/Bearbeiten(JFrame)
+- HauptPanel(JPanel)
+  - Eingabeoptionen für Eintragsrelevante Daten: Datum, Art, Zeit, ...
+- KnopfPanel(JPanel)
+  - Knöpfe für: verwerfen, erstellen/übernehmen
+
+FehlerPopUp(JFrame)
+- HauptPanel(JPanel)
+  - fehlende oder fehlerhafte Eingaben bei Eintragserstellung
