@@ -4,3 +4,4 @@ extend Component-Klassen für Method-/Interactionhandling und bessere Lesbarkeit
 Components in Container packen
 Enums/Funktionsklassen für Method-/Interactionhandling
 Components und Funktionalitäten verbinden
+De-/Serialization
