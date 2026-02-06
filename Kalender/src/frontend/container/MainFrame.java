@@ -5,6 +5,10 @@ import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 
+import frontend.container.calendar.CalendarFrame;
+import frontend.container.day.DayFrame;
+import frontend.container.entry.EntryFrame;
+
 public class MainFrame extends JFrame {
 	
 	public SubFrame dayFrame;
@@ -21,9 +25,9 @@ public class MainFrame extends JFrame {
 		
 		
 //		create contents
-		dayFrame = new DayPanel();
-		entryFrame = new EntryPanel();
-		calendarFrame = new CalendarPanel();
+		dayFrame = new DayFrame();
+		entryFrame = new EntryFrame();
+		calendarFrame = new CalendarFrame();
 		
 //		add contents
 		mainFramePanel.add(entryFrame);

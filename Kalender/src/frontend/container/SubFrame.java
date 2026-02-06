@@ -1,5 +1,6 @@
 package frontend.container;
 
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 public class SubFrame extends JPanel {
@@ -8,7 +9,8 @@ public class SubFrame extends JPanel {
 	public MainPanel mainPanel;
 	public ButtonPanel buttonPanel;
 	
-	public void layout() {
-		
+	public SubFrame() {
+		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
+		setLayout(layout);
 	}
 }

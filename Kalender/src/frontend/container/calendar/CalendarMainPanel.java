@@ -1,4 +1,4 @@
-package frontend.container;
+package frontend.container.calendar;
 
 import java.awt.GridLayout;
 import java.time.LocalDate;
@@ -7,9 +7,10 @@ import javax.swing.JLabel;
 
 import frontend.components.DayLabel;
 import frontend.components.DayLabel.Look;
+import frontend.container.MainPanel;
+import frontend.container.calendar.CalendarFrame.View;
 import frontend.components.MonthLabel;
 import frontend.components.YearLabel;
-import frontend.container.CalendarFrame.View;
 
 public class CalendarMainPanel extends MainPanel {
 
