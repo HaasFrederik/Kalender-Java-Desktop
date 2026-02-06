@@ -1,9 +1,30 @@
 package frontend.container;
 
-public class CalendarPanel extends SubFrame {
+import java.time.LocalDate;
 
-	public CalendarPanel() {
+public class CalendarFrame extends SubFrame {
+
+	public enum View {
+		days,
+		months,
+		years;
+	}
+	
+	public LocalDate referenceDate;
+	
+//	potentially only temp; depends where the startup-view date today will come from
+	public CalendarFrame() {
 		super();
+		referenceDate = LocalDate.now();
+	}
+	
+	public CalendarFrame(LocalDate ld) {
+		super();
+		referenceDate = ld;
+		
+		
+		
+		
 	}
 	
 }
