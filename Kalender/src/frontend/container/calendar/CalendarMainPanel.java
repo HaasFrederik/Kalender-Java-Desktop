@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 import javax.swing.JLabel;
 
+import backend.interactivity.Functionality;
+import backend.interactivity.UserAction;
 import frontend.components.DayLabel;
 import frontend.components.DayLabel.Look;
 import frontend.container.MainPanel;
@@ -50,15 +52,31 @@ public class CalendarMainPanel extends MainPanel {
 			}
 //			create and add 42 DayLables
 //					add pre-month dates in from left
-			for (int i = 1; i <= beforeFirstFillcount; i++) {
-				add(new DayLabel(firstOfMonth.minusDays(i), Look.grey));
+			for (int i = beforeFirstFillcount; i > 0; i--) {
+				DayLabel dl = new DayLabel(firstOfMonth.minusDays(i), Look.grey);
+				dl.doOn(UserAction.LeftPress, Functionality.DayLabelLookSetPressed);
+				dl.doOn(UserAction.CursorEnter, Functionality.DayLabelLookSetHighlighted);
+				dl.doOn(UserAction.CursorLeave, Functionality.DayLabelLookSetDefault);
+				add(dl);
+//				System.out.println((dl.getFont().getSize()));
+//				System.out.println(dl.getFont().getFontName());
+//				System.out.println(dl.getFont().getStyle());
+//				System.out.println(Font.BOLD);
 			}	
 //					add month and post-month dates from right
 			for (int i = 0; i < daysOfMonth; i++) {
-				add(new DayLabel(firstOfMonth.plusDays(i), Look.black));
+				DayLabel dl = new DayLabel(firstOfMonth.plusDays(i), Look.black);
+				dl.doOn(UserAction.LeftPress, Functionality.DayLabelLookSetPressed);
+				dl.doOn(UserAction.CursorEnter, Functionality.DayLabelLookSetHighlighted);
+				dl.doOn(UserAction.CursorLeave, Functionality.DayLabelLookSetDefault);
+				add(dl);
 			}
 			for (int i = 1; i <= afterLastFillcount; i++) {
-				add(new DayLabel(lastOfMonth.plusDays(i), Look.grey));
+				DayLabel dl = new DayLabel(lastOfMonth.plusDays(i), Look.grey);
+				dl.doOn(UserAction.LeftPress, Functionality.DayLabelLookSetPressed);
+				dl.doOn(UserAction.CursorEnter, Functionality.DayLabelLookSetHighlighted);
+				dl.doOn(UserAction.CursorLeave, Functionality.DayLabelLookSetDefault);
+				add(dl);
 			}
 			break;
 		case months:
@@ -69,7 +87,7 @@ public class CalendarMainPanel extends MainPanel {
 			setLayout(layoutGrid);
 //			add MonthLabels
 			LocalDate month = LocalDate.of(referenceDate.getYear(), 1, 1);
-			for (int i = 0; i< 12; i++) {
+			for (int i = 0; i < 12; i++) {
 				add(new MonthLabel(month.plusMonths(i)));
 			}
 			break;

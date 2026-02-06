@@ -6,8 +6,10 @@ import java.awt.FlowLayout;
 import javax.swing.JFrame;
 
 import frontend.container.calendar.CalendarFrame;
+import frontend.container.calendar.CalendarFrame.View;
 import frontend.container.day.DayFrame;
 import frontend.container.entry.EntryFrame;
+import main.Main;
 
 public class MainFrame extends JFrame {
 	
@@ -22,12 +24,12 @@ public class MainFrame extends JFrame {
 //		setup Layout
 		FlowLayout layout = new FlowLayout();
 		mainFramePanel.setLayout(layout);
-		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 //		create contents
 		dayFrame = new DayFrame();
 		entryFrame = new EntryFrame();
-		calendarFrame = new CalendarFrame();
+		calendarFrame = new CalendarFrame(Main.today, View.days);
 		
 //		add contents
 		mainFramePanel.add(entryFrame);

@@ -20,12 +20,18 @@ public class CalendarFrame extends SubFrame {
 		referenceDate = LocalDate.now();
 	}
 	
-	public CalendarFrame(LocalDate ld) {
+	public CalendarFrame(LocalDate ld, View view) {
 		super();
 		referenceDate = ld;
+//		create contents
+		labelPanel = new CalendarLabelPanel();
+		buttonPanel = new CalendarButtonPanel(view, referenceDate);
+		mainPanel = new CalendarMainPanel(view, referenceDate);
 		
-		
-		
+//		add contents
+		add(mainPanel);
+		add(labelPanel);
+		add(buttonPanel);
 		
 	}
 	

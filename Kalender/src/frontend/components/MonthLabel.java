@@ -26,7 +26,7 @@ public class MonthLabel extends MyLabel implements Interactible {
 
 	}
 	
-	private static String getGermanMonthAbbreviation(Month month) {
+	public static String getGermanMonthAbbreviation(Month month) {
 		switch (month) {
 		default:
 			return "???";
@@ -35,7 +35,7 @@ public class MonthLabel extends MyLabel implements Interactible {
 		case Month.FEBRUARY:
 			return "Feb";
 		case Month.MARCH:
-			return "M�r";
+			return "Mär";
 		case Month.APRIL:
 			return "Apr";
 		case Month.MAY:

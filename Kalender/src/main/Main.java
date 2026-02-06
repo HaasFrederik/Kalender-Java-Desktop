@@ -1,18 +1,16 @@
 package main;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import backend.dating.Day;
 import backend.serialization.Serialize;
+import frontend.container.MainFrame;
 
 public class Main {
 
@@ -22,15 +20,21 @@ public class Main {
 	public static Path saveFolderPath = Paths.get("data");
 	public static Path saveFilePath = Paths.get("data/save.txt");
 	
+	public static MainFrame mainFrame;
+	public static LocalDate today = LocalDate.now();
+	
 	public static void main(String[] args) throws IOException {
 		if (Files.notExists(saveFolderPath)) {
 			Files.createDirectories(saveFolderPath);
+			
+			System.out.println("hi");
 //			TODO open "Calendar.exe"
-		} else {
+		} else if (Files.exists(saveFilePath)){
 			Serialize.loadFromFile(saveFolderPath);
 //			TODO initialise Calendar with loaded data/open MainFrame
 		}
-		
+		mainFrame = new MainFrame();
+		mainFrame.setVisible(true);
 	}
 	
 }
