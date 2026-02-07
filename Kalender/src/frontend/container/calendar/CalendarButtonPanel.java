@@ -26,8 +26,8 @@ public class CalendarButtonPanel extends ButtonPanel {
 			yearButton = new MyButton("" + referenceDate.getYear());
 			monthButton = new MyButton(MonthLabel.getGermanMonthAbbreviation(referenceDate.getMonth()));
 //			add functionality to buttons
-			yearButton.doOn(UserAction.LeftClick, Functionality.CalendarViewToYears);
-			monthButton.doOn(UserAction.LeftClick, Functionality.CalendarViewToMonths);
+			yearButton.doOn(UserAction.LeftClick, Functionality.CalendarViewGoUpToYears);
+			monthButton.doOn(UserAction.LeftClick, Functionality.CalendarViewGoUpToMonths);
 			prevButton.doOn(UserAction.LeftClick, Functionality.GoToPrevMonth);
 			nextButton.doOn(UserAction.LeftClick, Functionality.GoToNextMonth);
 //			add buttons
@@ -40,7 +40,7 @@ public class CalendarButtonPanel extends ButtonPanel {
 //			create view specific button
 			yearButton = new MyButton("" + referenceDate.getYear());
 //			add functionality
-			yearButton.doOn(UserAction.LeftClick, Functionality.CalendarViewToYears);
+			yearButton.doOn(UserAction.LeftClick, Functionality.CalendarViewGoUpToYears);
 			prevButton.doOn(UserAction.LeftClick, Functionality.GoToPrevYear);
 			nextButton.doOn(UserAction.LeftClick, Functionality.GoToNextYear);
 //			add buttons

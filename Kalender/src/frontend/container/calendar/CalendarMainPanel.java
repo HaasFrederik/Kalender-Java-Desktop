@@ -88,7 +88,11 @@ public class CalendarMainPanel extends MainPanel {
 //			add MonthLabels
 			LocalDate month = LocalDate.of(referenceDate.getYear(), 1, 1);
 			for (int i = 0; i < 12; i++) {
-				add(new MonthLabel(month.plusMonths(i)));
+				MonthLabel monthLabel = new MonthLabel(month.plusMonths(i));
+				monthLabel.doOn(UserAction.LeftPress, Functionality.CalendarViewGoDownToDays);
+				monthLabel.doOn(UserAction.CursorEnter, Functionality.MonthLabelSetHighlighted);
+				monthLabel.doOn(UserAction.CursorLeave, Functionality.MonthLabelSetDefault);
+				add(monthLabel);
 			}
 			break;
 		case years:
@@ -99,7 +103,11 @@ public class CalendarMainPanel extends MainPanel {
 			setLayout(layoutGrid);
 //			add YearLabels
 			for (int i = -7; i <= 7; i++) {
-				add(new YearLabel(referenceDate.plusYears(i)));
+				YearLabel yearLabel = new YearLabel(referenceDate.plusYears(i));
+				yearLabel.doOn(UserAction.LeftPress, Functionality.CalendarViewGoDownToMonths);
+				yearLabel.doOn(UserAction.CursorEnter, Functionality.YearLabelSetHighlighted);
+				yearLabel.doOn(UserAction.CursorLeave, Functionality.YearLabelSetDefault);
+				add(yearLabel);
 			}
 			break;
 		}

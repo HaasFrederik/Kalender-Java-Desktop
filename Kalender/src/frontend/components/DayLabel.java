@@ -30,7 +30,6 @@ public class DayLabel extends MyLabel implements Interactible {
 	
 	public DayLabel(LocalDate d, Look look) {
 		super("" + d.getDayOfMonth());
-		setHorizontalAlignment(SwingConstants.CENTER);
 		setMinimumSize(new Dimension(25,25));
 		setPreferredSize(new Dimension(25,25));
 		setMaximumSize(new Dimension(25,25));

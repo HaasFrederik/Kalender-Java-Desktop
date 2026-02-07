@@ -3,9 +3,9 @@ package backend.interactivity;
 public enum Functionality {
 	
 //	******* CalendarButtons *******
-	CalendarViewToYears(Functions.CalendarButtonFunctions.class, "CalendarViewToYears"),
-	CalendarViewToMonths(Functions.CalendarButtonFunctions.class, "CalendarViewToMonths"),
-	CalendarViewToDays(Functions.CalendarButtonFunctions.class, "CalendarViewToDays"),
+	CalendarViewGoUpToYears(Functions.CalendarButtonFunctions.class, "CalendarViewGoUpToYears"),
+	CalendarViewGoUpToMonths(Functions.CalendarButtonFunctions.class, "CalendarViewGoUpToMonths"),
+//	CalendarViewToDays(Functions.CalendarButtonFunctions.class, "CalendarViewToDays"),
 	GoToPrevMonth(Functions.CalendarButtonFunctions.class, "GoToPrevMonth"), 
 	GoToNextMonth(Functions.CalendarButtonFunctions.class, "GoToNextMonth"),
 	GoToPrevYear(Functions.CalendarButtonFunctions.class, "GoToPrevYear"),
@@ -20,7 +20,14 @@ public enum Functionality {
 	ShowDayInDayFrame(Functions.DayLabelFunctions.class, "ShowDayInDayFrame"),
 	
 //	******* MonthLabels *******
+	CalendarViewGoDownToDays(Functions.MonthLabelFunctions.class, "CalendarViewGoDownToDays"),
+	MonthLabelSetHighlighted(Functions.MonthLabelFunctions.class, "MonthLabelSetHighlighted"),
+	MonthLabelSetDefault(Functions.MonthLabelFunctions.class, "MonthLabelSetDefault"),
 	
+//	******* YearLabels *******
+	CalendarViewGoDownToMonths(Functions.YearLabelFunctions.class, "CalendarViewGoDownToMonths"),
+	YearLabelSetHighlighted(Functions.YearLabelFunctions.class, "YearLabelSetHighlighted"),
+	YearLabelSetDefault(Functions.YearLabelFunctions.class, "YearLabelSetDefault"),
 	;
 	
 	public final Class<?> CLASS;
