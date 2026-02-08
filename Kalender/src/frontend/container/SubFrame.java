@@ -10,6 +10,7 @@ public class SubFrame extends JPanel {
 	public ButtonPanel buttonPanel;
 	
 	public SubFrame() {
+//		setLayout
 		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(layout);
 	}

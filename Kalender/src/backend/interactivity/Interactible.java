@@ -15,10 +15,10 @@ public interface Interactible {
 		return finder.findStatic(func.CLASS, func.NAME, methodType);
 	}
 	
-	default public MethodHandle resolveFunctionality(Functionality func) throws NoSuchMethodException, IllegalAccessException {
-		MethodType methodType = MethodType.methodType(void.class);
-		MethodHandles.Lookup finder = MethodHandles.lookup();
-		return finder.findStatic(func.CLASS, func.NAME, methodType);
-	}
+//	default public MethodHandle resolveFunctionality(Functionality func) throws NoSuchMethodException, IllegalAccessException {
+//		MethodType methodType = MethodType.methodType(void.class);
+//		MethodHandles.Lookup finder = MethodHandles.lookup();
+//		return finder.findStatic(func.CLASS, func.NAME, methodType);
+//	}
 	
 }

@@ -1,5 +1,7 @@
 package frontend.components;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.lang.invoke.MethodHandle;
 
 import javax.swing.JButton;
@@ -17,18 +19,20 @@ public class MyButton extends JButton implements Interactible {
 	
 	@Override
 	public void doOn(UserAction userAction, Functionality function) {
+		MyButton source = this;
+		MethodHandle handle;
+		try {
+			handle = resolveFunctionality(function, source);
+		} catch (NoSuchMethodException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
 		switch(userAction) {
 		case LeftClick:
 			addActionListener(event -> {
 				try {
-					MethodHandle handle = resolveFunctionality(function, this);
-					handle.invoke(this);
-				} catch (NoSuchMethodException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					handle.invoke(source);
 				} catch (Throwable e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

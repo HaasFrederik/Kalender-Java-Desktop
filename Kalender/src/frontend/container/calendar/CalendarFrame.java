@@ -29,9 +29,11 @@ public class CalendarFrame extends SubFrame {
 		mainPanel = new CalendarMainPanel(view, referenceDate);
 		
 //		add contents
-		add(mainPanel);
 		add(labelPanel);
 		add(buttonPanel);
+		add(mainPanel);
+		
+		
 		
 	}
 	

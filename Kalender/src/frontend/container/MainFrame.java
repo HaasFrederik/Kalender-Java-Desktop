@@ -2,9 +2,12 @@ package frontend.container;
 
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
+import backend.dating.Day;
 import frontend.container.calendar.CalendarFrame;
 import frontend.container.calendar.CalendarFrame.View;
 import frontend.container.day.DayFrame;
@@ -22,19 +25,25 @@ public class MainFrame extends JFrame {
 		super();
 		
 //		setup Layout
-		FlowLayout layout = new FlowLayout();
+		GridLayout layout = new GridLayout(0,3);
 		mainFramePanel.setLayout(layout);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 //		create contents
-		dayFrame = new DayFrame();
-		entryFrame = new EntryFrame();
 		calendarFrame = new CalendarFrame(Main.today, View.days);
+//		check if today has entries else create new Day Object for today. Create DayFrame for today
+		Day today = new Day(Main.today);
+		if (Main.datesWithEntries.containsKey(Main.today)) {
+			today = Main.datesWithEntries.get(Main.today);
+		}
+		dayFrame = new DayFrame(today);
+		entryFrame = new EntryFrame();
 		
 //		add contents
 		mainFramePanel.add(entryFrame);
 		mainFramePanel.add(dayFrame);
 		mainFramePanel.add(calendarFrame);
+		
 		
 //		make presentatble
 		validate();

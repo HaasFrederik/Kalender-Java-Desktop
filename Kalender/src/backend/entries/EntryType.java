@@ -2,11 +2,11 @@ package backend.entries;
 
 public enum EntryType {
 
-	SimpleEntry("entry"),
-	Deadline("deadline");
+	SimpleEntry("Eintrag"),
+	Deadline("Deadline");
 	
-	public static final String SIMPLE_ENTRY = "entry";
-	public static final String DEADLINE = "deadline";
+	public static final String SIMPLE_ENTRY = "Eintrag";
+	public static final String DEADLINE = "Deadline";
 	
 	public final String type;
 	private EntryType(String t) {

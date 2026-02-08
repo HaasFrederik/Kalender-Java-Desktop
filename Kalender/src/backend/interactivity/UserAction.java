@@ -5,5 +5,6 @@ public enum UserAction {
 	LeftClick,
 	CursorEnter,
 	CursorLeave,
-	LeftDoubleClick;
+	LeftDoubleClick,
+	;
 }

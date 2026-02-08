@@ -30,7 +30,7 @@ public class Serialize {
 		List<String> entryLines = new ArrayList<String>();
 		for (Day day : Main.datesWithEntries.values()) {
 			for (Entry e : day.entryList) {
-				entryLines.add(e.toString());
+				entryLines.add(e.serialize());
 			}
 		}
 		Files.write(path, entryLines, StandardCharsets.UTF_8);

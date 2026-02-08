@@ -6,6 +6,7 @@ public class LabelPanel extends JPanel {
 
 	public LabelPanel() {
 		super();
+//		TODO layout?
 	}
 	
 }

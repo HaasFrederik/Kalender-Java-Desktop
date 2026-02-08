@@ -7,7 +7,7 @@ import backend.entries.Entry;
 
 public class Day {
 
-	public List<Entry> entryList;
+	public List<Entry> entryList = new ArrayList<Entry>();
 	public LocalDate date;
 	
 	public Day(LocalDate d) {
@@ -19,10 +19,5 @@ public class Day {
 		entryList = new ArrayList<Entry>();
 		entryList.add(e);
 	}
-	
-//	public Day(LocalDate d, List<Entry> entries) {
-//		date = d;
-//		entryList = entries;
-//	}
 	
 }

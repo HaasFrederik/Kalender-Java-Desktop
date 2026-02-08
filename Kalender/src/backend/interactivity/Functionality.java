@@ -5,7 +5,6 @@ public enum Functionality {
 //	******* CalendarButtons *******
 	CalendarViewGoUpToYears(Functions.CalendarButtonFunctions.class, "CalendarViewGoUpToYears"),
 	CalendarViewGoUpToMonths(Functions.CalendarButtonFunctions.class, "CalendarViewGoUpToMonths"),
-//	CalendarViewToDays(Functions.CalendarButtonFunctions.class, "CalendarViewToDays"),
 	GoToPrevMonth(Functions.CalendarButtonFunctions.class, "GoToPrevMonth"), 
 	GoToNextMonth(Functions.CalendarButtonFunctions.class, "GoToNextMonth"),
 	GoToPrevYear(Functions.CalendarButtonFunctions.class, "GoToPrevYear"),
@@ -28,6 +27,10 @@ public enum Functionality {
 	CalendarViewGoDownToMonths(Functions.YearLabelFunctions.class, "CalendarViewGoDownToMonths"),
 	YearLabelSetHighlighted(Functions.YearLabelFunctions.class, "YearLabelSetHighlighted"),
 	YearLabelSetDefault(Functions.YearLabelFunctions.class, "YearLabelSetDefault"),
+	
+	
+//	******* DayButtons *******
+	OpenEntryCreator(Functions.DayButtonFunctions.class, "OpenEntryCreator"),
 	;
 	
 	public final Class<?> CLASS;

@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Entry {
 
+//	fields determining behaviour on (de-)serialisation
 	public LocalDate date;
 	public LocalTime start;
 	public LocalTime end;
@@ -23,6 +24,7 @@ public class Entry {
 	public boolean stopsRepeat;
 	public LocalDate lastRepeatDate;
 	public List<LocalDate> excludedDates; //only written, when repeated entries are deleted
+	
 	
 	private class Serialize {
 		private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -145,7 +147,7 @@ public class Entry {
 		
 	}
 	
-	public String toString() {
+	public String serialize() {
 		String dateString = date.format(Serialize.dateFormatter);
 		String timeStartString = start.format(Serialize.timeFormatter);
 		String timeEndString = end.format(Serialize.timeFormatter);
@@ -197,5 +199,14 @@ public class Entry {
 			+ excludedDatesString;
 	}
 	
+	
+	public String toString() {
+//		type + name + time + 
+		String timeString = this.start.format(Serialize.dateFormatter);
+		if (!this.start.equals(this.end)) {
+			timeString = this.start.format(Serialize.dateFormatter) + " - " + this.end.format(Serialize.dateFormatter);
+		}
+		return this.entryType.type + " " + this.name + " " + timeString;
+	}
 	
 }

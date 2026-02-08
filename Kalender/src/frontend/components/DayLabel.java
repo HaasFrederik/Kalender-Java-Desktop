@@ -6,21 +6,25 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.invoke.MethodHandle;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
 
+import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 
 import backend.interactivity.Functionality;
 import backend.interactivity.Interactible;
 import backend.interactivity.UserAction;
 
-public class DayLabel extends MyLabel implements Interactible {
+public class DayLabel extends MyLabel{
 
 	
 	public enum Look { //encompasses text-colour, background-colour and -opacity as well as font
 		grey,
 		black,
 		highlighted,
+		today,
 		pressed;
 	}
 	
@@ -30,6 +34,7 @@ public class DayLabel extends MyLabel implements Interactible {
 	
 	public DayLabel(LocalDate d, Look look) {
 		super("" + d.getDayOfMonth());
+		date = d;
 		setMinimumSize(new Dimension(25,25));
 		setPreferredSize(new Dimension(25,25));
 		setMaximumSize(new Dimension(25,25));
@@ -49,88 +54,56 @@ public class DayLabel extends MyLabel implements Interactible {
 			setOpaque(false);
 			setForeground(Color.BLACK);
 			setFont(new Font(Font.DIALOG, Font.BOLD, 12));
+			setBorder(null);
 			break;
 		case grey:
 			setOpaque(false);
 			setForeground(Color.GRAY);
 			setFont(new Font(Font.DIALOG, Font.BOLD, 12));
+			setBorder(null);
 			break;
 		case pressed:
 			setOpaque(true);
-			setBackground(new Color(40,200,200));
-			setForeground(new Color(200,40,40));
-			setFont(new Font(Font.DIALOG, Font.PLAIN, 16));
+			setBackground(new Color(20,100,100));
+			setForeground(new Color(255,255,255));
+//			setFont(new Font(Font.DIALOG, Font.PLAIN, 16));
+			setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 			break;
 		case highlighted:
 			setOpaque(true);
 			setBackground(Color.DARK_GRAY);
 			setForeground(Color.ORANGE);
-			setFont(new Font(Font.DIALOG, Font.PLAIN, 16));
+//			setFont(new Font(Font.DIALOG, Font.PLAIN, 16));
+			setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 			break;
+		case today:
+			setOpaque(false);
+			setForeground(Color.BLUE);
+			setBorder(BorderFactory.createEtchedBorder(new Color(50,50,150), new Color(0,0,50)));
 		default:
 			break;
 		
 		}
 	}
 	
-	@Override
-	public void doOn(UserAction userAction, Functionality function) {
-		DayLabel source = this;
-		MethodHandle handle;
-		try {
-			handle = resolveFunctionality(function, source);
-		} catch (NoSuchMethodException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return;
-		}
-		switch(userAction) {
-		case CursorEnter:
-			addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseEntered(MouseEvent event) {
-					try {
-						handle.invoke(source);
-					} catch (Throwable e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			});
-			break;
-		case CursorLeave:
-			addMouseListener(new MouseAdapter () {
-				@Override
-				public void mouseExited(MouseEvent event) {
-					try {
-						handle.invoke(source);
-					} catch (Throwable e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			});
-			break;
-		case LeftClick:
-			break;
-		case LeftDoubleClick:
-			break;
-		case LeftPress:
-			addMouseListener(new MouseAdapter() {
-				@Override
-				public void mousePressed(MouseEvent event) {
-					try {
-						handle.invoke(source);
-					} catch (Throwable e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			});
-			break;
+	public static String getGermanDayNames(DayOfWeek day) {
+		switch (day) {
 		default:
-			break;
-		
+			return "???";
+		case DayOfWeek.MONDAY:
+			return "Montag";
+		case DayOfWeek.TUESDAY:
+			return "Dienstag";
+		case DayOfWeek.WEDNESDAY:
+			return "Mittwoch";
+		case DayOfWeek.THURSDAY:
+			return "Donnerstag";
+		case DayOfWeek.FRIDAY:
+			return "Freitag";
+		case DayOfWeek.SATURDAY:
+			return "Samstag";
+		case DayOfWeek.SUNDAY:
+			return "Sonntag";
 		}
 	}
 

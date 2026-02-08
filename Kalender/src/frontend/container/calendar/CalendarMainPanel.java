@@ -11,7 +11,9 @@ import frontend.components.DayLabel;
 import frontend.components.DayLabel.Look;
 import frontend.container.MainPanel;
 import frontend.container.calendar.CalendarFrame.View;
+import main.Main;
 import frontend.components.MonthLabel;
+import frontend.components.MyLabel;
 import frontend.components.YearLabel;
 
 public class CalendarMainPanel extends MainPanel {
@@ -28,13 +30,13 @@ public class CalendarMainPanel extends MainPanel {
 			layoutGrid.setHgap(5);
 			setLayout(layoutGrid);
 //			add labels denoting weekdays
-			add(new JLabel("Mo"));
-			add(new JLabel("Di"));
-			add(new JLabel("Mi"));
-			add(new JLabel("Do"));
-			add(new JLabel("Fr"));
-			add(new JLabel("Sa"));
-			add(new JLabel("So"));
+			add(new MyLabel("Mo"));
+			add(new MyLabel("Di"));
+			add(new MyLabel("Mi"));
+			add(new MyLabel("Do"));
+			add(new MyLabel("Fr"));
+			add(new MyLabel("Sa"));
+			add(new MyLabel("So"));
 			
 //			discern which 42 dates to display
 //				Days Of current Month
@@ -48,35 +50,54 @@ public class CalendarMainPanel extends MainPanel {
 			int afterLastFillcount = 7 - lastOfMonth.getDayOfWeek().getValue(); // range 6 - 0 (lastOfMonth: Mo - Su)
 //				if not 42 days yet append days of next month
 			if (daysOfMonth + beforeFirstFillcount + afterLastFillcount < 42) {
-				afterLastFillcount += 7;
+				afterLastFillcount += 42 - (daysOfMonth + beforeFirstFillcount + afterLastFillcount);
+//				System.out.println(daysOfMonth+beforeFirstFillcount+afterLastFillcount);
 			}
 //			create and add 42 DayLables
 //					add pre-month dates in from left
 			for (int i = beforeFirstFillcount; i > 0; i--) {
 				DayLabel dl = new DayLabel(firstOfMonth.minusDays(i), Look.grey);
+				if (dl.date.isEqual(Main.today)) {
+					dl.defaultLook = dl.currentLook = Look.today;
+					dl.showCurrentLook();
+				}
 				dl.doOn(UserAction.LeftPress, Functionality.DayLabelLookSetPressed);
+				dl.doOn(UserAction.LeftPress, Functionality.ShowDayInDayFrame);
 				dl.doOn(UserAction.CursorEnter, Functionality.DayLabelLookSetHighlighted);
 				dl.doOn(UserAction.CursorLeave, Functionality.DayLabelLookSetDefault);
 				add(dl);
+//				System.out.println("predays");
 //				System.out.println((dl.getFont().getSize()));
 //				System.out.println(dl.getFont().getFontName());
 //				System.out.println(dl.getFont().getStyle());
 //				System.out.println(Font.BOLD);
 			}	
-//					add month and post-month dates from right
+//					add month and post-month dates
 			for (int i = 0; i < daysOfMonth; i++) {
 				DayLabel dl = new DayLabel(firstOfMonth.plusDays(i), Look.black);
+				if (dl.date.isEqual(Main.today)) {
+					dl.defaultLook = dl.currentLook = Look.today;
+					dl.showCurrentLook();
+				}
 				dl.doOn(UserAction.LeftPress, Functionality.DayLabelLookSetPressed);
+				dl.doOn(UserAction.LeftPress, Functionality.ShowDayInDayFrame);
 				dl.doOn(UserAction.CursorEnter, Functionality.DayLabelLookSetHighlighted);
 				dl.doOn(UserAction.CursorLeave, Functionality.DayLabelLookSetDefault);
 				add(dl);
+//				System.out.println("indays");
 			}
 			for (int i = 1; i <= afterLastFillcount; i++) {
 				DayLabel dl = new DayLabel(lastOfMonth.plusDays(i), Look.grey);
+				if (dl.date.isEqual(Main.today)) {
+					dl.defaultLook = dl.currentLook = Look.today;
+					dl.showCurrentLook();
+				}
 				dl.doOn(UserAction.LeftPress, Functionality.DayLabelLookSetPressed);
+				dl.doOn(UserAction.LeftPress, Functionality.ShowDayInDayFrame);
 				dl.doOn(UserAction.CursorEnter, Functionality.DayLabelLookSetHighlighted);
 				dl.doOn(UserAction.CursorLeave, Functionality.DayLabelLookSetDefault);
 				add(dl);
+//				System.out.println("postdays");
 			}
 			break;
 		case months:
