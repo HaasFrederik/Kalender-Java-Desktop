@@ -23,6 +23,9 @@ public class Serialize {
 				Day newDay = new Day(newEntry.date, newEntry);
 				Main.datesWithEntries.put(newDay.date, newDay);
 			}
+			if (newEntry.isRepeatRoot) {
+				Main.repeatRootEntries.add(newEntry);
+			}
 		}
 	}
 	

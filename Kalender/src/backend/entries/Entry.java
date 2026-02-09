@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Entry {
 
@@ -17,13 +19,19 @@ public class Entry {
 	public String description;
 	public boolean isCompleted;
 	
-	public boolean isRepeating;
+	
 	public boolean isRepeatRoot;
 	public LocalDate repeatRootDate;
 	public RepeatRate repeatRate;
 	public boolean stopsRepeat;
 	public LocalDate lastRepeatDate;
-	public List<LocalDate> excludedDates; //only written, when repeated entries are deleted
+	public List<LocalDate> excludedDates = new ArrayList<LocalDate>(); 
+	
+//	fields not affecting  serialisation
+	public Entry repeatRoot;
+	public boolean isRepeating;
+	public Map<LocalDate, Entry> knownRepeats = new HashMap<LocalDate, Entry>();
+//	public List<Entry> knownRepeats = new ArrayList<Entry>();
 	
 	
 	private class Serialize {
@@ -34,33 +42,35 @@ public class Entry {
 	}
 	
 //	constructor for non-repeating Entry-Objects
-	public Entry(LocalDate date, LocalTime start, LocalTime end, EntryType type, String name, String descr, boolean complete) {
+	public Entry(LocalDate date, LocalTime start, LocalTime end, EntryType type, String name, String descr) {
 		this.date = date;
 		this.start = start;
 		this.end = end;
 		entryType = type;
 		this.name = name;
 		description = descr;
-		isCompleted = complete;
+		isCompleted = false;
 		isRepeating = false;
 		isRepeatRoot = false;
 		repeatRootDate = null;
 		repeatRate = null;
 		stopsRepeat = false;
 		lastRepeatDate = null;
-		excludedDates = null;
+		excludedDates = new ArrayList<LocalDate>();
+		knownRepeats = new HashMap<LocalDate, Entry>();
+		repeatRoot = null;
 	}
 	
 //	constructor for repeat-root Entry-Objects
-	public Entry(LocalDate date, LocalTime start, LocalTime end, EntryType type, String name, String descr, boolean complete, 
-			boolean repeats, boolean isRepRoot, RepeatRate rate, boolean stops, LocalDate lastDate) {
+	public Entry(LocalDate date, LocalTime start, LocalTime end, EntryType type, String name, String descr,
+			boolean repeats, boolean isRepRoot, RepeatRate rate, boolean stops, LocalDate lastDate, List<LocalDate> repeatExclusions) {
 		this.date = date;
 		this.start = start;
 		this.end = end;
 		entryType = type;
 		this.name = name;
 		description = descr;
-		isCompleted = complete;
+		isCompleted = false;
 		
 		isRepeating = repeats;
 		isRepeatRoot = isRepRoot;
@@ -68,10 +78,30 @@ public class Entry {
 		repeatRate = rate;
 		stopsRepeat = stops;
 		lastRepeatDate = lastDate;
+		excludedDates = repeatExclusions;
+		knownRepeats = new HashMap<LocalDate, Entry>();
+		repeatRoot = this;
 	}
 	
 //	constructor for repeated Entry-Objects
-	public Entry(LocalDate date, LocalTime start, LocalTime end, EntryType type, String name, String descr, boolean complete, 
+	public Entry(LocalDate date, Entry repRoot) {
+		this.date = date;
+		start = repRoot.start;
+		end = repRoot.end;
+		entryType = repRoot.entryType;
+		name = repRoot.name;
+		description = repRoot.description;
+		isCompleted = false;
+		isRepeating = true;
+		isRepeatRoot = false;
+		repeatRootDate = repRoot.date;	
+		if (!repRoot.knownRepeats.containsKey(date)) {
+			repRoot.knownRepeats.put(date, this);
+		}
+		knownRepeats = repRoot.knownRepeats;
+	}
+	
+	public Entry(LocalDate date, LocalTime start, LocalTime end, EntryType type, String name, String descr,
 			boolean repeats, boolean isRepRoot, LocalDate repRoot) {
 		this.date = date;
 		this.start = start;
@@ -79,7 +109,7 @@ public class Entry {
 		entryType = type;
 		this.name = name;
 		description = descr;
-		isCompleted = complete;
+		isCompleted = false;
 		
 		isRepeating = repeats;
 		isRepeatRoot = isRepRoot;
@@ -202,9 +232,9 @@ public class Entry {
 	
 	public String toString() {
 //		type + name + time + 
-		String timeString = this.start.format(Serialize.dateFormatter);
+		String timeString = this.start.format(Serialize.timeFormatter);
 		if (!this.start.equals(this.end)) {
-			timeString = this.start.format(Serialize.dateFormatter) + " - " + this.end.format(Serialize.dateFormatter);
+			timeString = this.start.format(Serialize.timeFormatter) + " - " + this.end.format(Serialize.timeFormatter);
 		}
 		return this.entryType.type + " " + this.name + " " + timeString;
 	}

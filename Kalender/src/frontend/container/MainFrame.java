@@ -37,7 +37,7 @@ public class MainFrame extends JFrame {
 			today = Main.datesWithEntries.get(Main.today);
 		}
 		dayFrame = new DayFrame(today);
-		entryFrame = new EntryFrame();
+		entryFrame = new EntryFrame(null);
 		
 //		add contents
 		mainFramePanel.add(entryFrame);

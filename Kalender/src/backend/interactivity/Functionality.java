@@ -31,6 +31,22 @@ public enum Functionality {
 	
 //	******* DayButtons *******
 	OpenEntryCreator(Functions.DayButtonFunctions.class, "OpenEntryCreator"),
+	
+
+//	******* EntryAuthorComponents *******
+	SimpleEntrySelected(Functions.EntryAuthorFunctions.class, "SimpleEntrySelected"),
+	DeadlineSelected(Functions.EntryAuthorFunctions.class, "DeadlineSelected"),
+	TimeRangeSelected(Functions.EntryAuthorFunctions.class, "TimeRangeSelected"),
+	PointInTimeSelected(Functions.EntryAuthorFunctions.class, "PointInTimeSelected"),
+	RepeatsSelected(Functions.EntryAuthorFunctions.class,  "RepeatsSelected"),
+	RepeatsDeselected(Functions.EntryAuthorFunctions.class, "RepeatsDeselected"),
+	LastRepeatSelected(Functions.EntryAuthorFunctions.class, "LastRepeatSelected"),
+	LastRepeatDeselected(Functions.EntryAuthorFunctions.class, "LastRepeatDeselected"),
+	ExcludeDatesSelected(Functions.EntryAuthorFunctions.class, "ExcludeDatesSelected"),
+	ExcludeDatesDeselected(Functions.EntryAuthorFunctions.class, "ExcludeDatesDeselected"),
+	CancelAuthor(Functions.EntryAuthorFunctions.class, "CancelAuthor"),
+	ConfirmAuthor(Functions.EntryAuthorFunctions.class, "ConfirmAuthor"),
+	ConfirmEdit(Functions.EntryAuthorFunctions.class, "ConfirmEdit");
 	;
 	
 	public final Class<?> CLASS;

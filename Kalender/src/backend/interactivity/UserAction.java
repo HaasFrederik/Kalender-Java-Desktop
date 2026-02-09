@@ -6,5 +6,7 @@ public enum UserAction {
 	CursorEnter,
 	CursorLeave,
 	LeftDoubleClick,
+	SelectCheckBox,
+	DeselectCheckBox,
 	;
 }
