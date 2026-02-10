@@ -16,17 +16,45 @@ import main.Main;
 
 public class MainFrame extends JFrame {
 	
-	public SubFrame dayFrame;
-	public SubFrame entryFrame;
-	public SubFrame calendarFrame;
-	public Container mainFramePanel = this.getContentPane();
+	public DayFrame dayFrame;
+	public EntryFrame entryFrame;
+	public CalendarFrame calendarFrame;
+//	Array contains dayFrame, entryFrame, calendarFrame. gives order of addition to mainFrame. 
+//	TODO Test: If dayFrame is written, should change content of subframes
+//	Result: does NOT change!
+	
+
+	
+	public MyPanel mainFramePanel;
 	
 	public MainFrame() {
 		super();
+//		setup contentPane
+		mainFramePanel = new MyPanel() {
+
+			@Override
+			public void setupLayout() {
+				GridLayout layout = new GridLayout(0,3);
+				this.setLayout(layout);
+			}
+
+			@Override
+			public void update() {
+//				Array contains SubFrames in Order entry, day, calendar. If changes occur, use as buffer to write new subframes and recreate mainFrame
+				SubFrame[] subframes = new SubFrame[] {entryFrame, dayFrame, calendarFrame};
+				this.removeAll();
+				for (SubFrame sf : subframes) {
+					this.add(sf);
+				}
+				this.revalidate();
+				this.repaint();
+			}
+			
+		};
+		setContentPane(mainFramePanel);
 		
 //		setup Layout
-		GridLayout layout = new GridLayout(0,3);
-		mainFramePanel.setLayout(layout);
+		mainFramePanel.setupLayout();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 //		create contents
@@ -49,6 +77,10 @@ public class MainFrame extends JFrame {
 		validate();
 		pack();
 		
+	}
+	
+	public void update() {
+		mainFramePanel.update();
 	}
 	
 }
