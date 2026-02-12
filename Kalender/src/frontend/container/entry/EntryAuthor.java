@@ -91,7 +91,6 @@ public class EntryAuthor extends JPanel {
 			}
 		}
 		if (!isEditor) {
-//			TODO set text in datefield to appropriate date from DayFrame
 			dateField.setText(((DayFrame)Main.mainFrame.dayFrame).displayedDay.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 			simpleEntryCheckBox.setSelected(true);
 			simpleEntryCheckBox.setEnabled(false);

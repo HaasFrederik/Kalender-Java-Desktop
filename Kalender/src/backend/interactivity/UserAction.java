@@ -8,5 +8,6 @@ public enum UserAction {
 	LeftDoubleClick,
 	SelectCheckBox,
 	DeselectCheckBox,
+	WindowClose,
 	;
 }

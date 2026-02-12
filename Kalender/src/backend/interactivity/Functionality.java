@@ -2,6 +2,9 @@ package backend.interactivity;
 
 public enum Functionality {
 	
+//	******* ClosingWindows *******
+	SaveAndExit(Functions.MyFrameFunctions.class, "SaveAndExit"),
+	
 //	******* CalendarButtons *******
 	CalendarViewGoUpToYears(Functions.CalendarButtonFunctions.class, "CalendarViewGoUpToYears"),
 	CalendarViewGoUpToMonths(Functions.CalendarButtonFunctions.class, "CalendarViewGoUpToMonths"),
@@ -32,7 +35,10 @@ public enum Functionality {
 //	******* DayButtons *******
 	OpenEntryCreator(Functions.DayButtonFunctions.class, "OpenEntryCreator"),
 	
-
+//	******* EntryLabels *******
+	ShowEntryInEntryFrame(Functions.EntryLabelFunctions.class, "ShowEntryInEntryFrame"),
+	
+	
 //	******* EntryAuthorComponents *******
 	SimpleEntrySelected(Functions.EntryAuthorFunctions.class, "SimpleEntrySelected"),
 	DeadlineSelected(Functions.EntryAuthorFunctions.class, "DeadlineSelected"),

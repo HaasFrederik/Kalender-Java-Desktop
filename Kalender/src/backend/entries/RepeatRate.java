@@ -72,6 +72,7 @@ public enum RepeatRate {
 		}
 	}
 	
+	
 	public String type;
 	private RepeatRate(String t) {
 		type = t;

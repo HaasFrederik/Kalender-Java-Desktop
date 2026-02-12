@@ -239,4 +239,61 @@ public class Entry {
 		return this.entryType.type + " " + this.name + " " + timeString;
 	}
 	
+	public LocalDate nextRepeatDate() {
+		LocalDate candidate;
+		if (isRepeating) {
+			switch(repeatRate) {
+			case Biweekly:
+				candidate = date.plusWeeks(2);
+				while (excludedDates.contains(candidate) && candidate.isBefore(lastRepeatDate)) {
+					candidate = candidate.plusWeeks(2);
+				}
+				if (candidate.isAfter(lastRepeatDate)) {
+					return date;
+				}
+				return candidate;
+			case Daily:
+				candidate = date.plusDays(1);
+				while (excludedDates.contains(candidate) && candidate.isBefore(lastRepeatDate)) {
+					candidate = candidate.plusDays(1);
+				}
+				if (candidate.isAfter(lastRepeatDate)) {
+					return date;
+				}
+				return candidate;
+			case Monthly:
+				candidate = date.plusMonths(1);
+				while (excludedDates.contains(candidate) && candidate.isBefore(lastRepeatDate)) {
+					candidate = candidate.plusMonths(1);
+				}
+				if (candidate.isAfter(lastRepeatDate)) {
+					return date;
+				}
+				return candidate;
+			case Weekly:
+				candidate = date.plusWeeks(1);
+				while (excludedDates.contains(candidate) && candidate.isBefore(lastRepeatDate)) {
+					candidate = candidate.plusWeeks(1);
+				}
+				if (candidate.isAfter(lastRepeatDate)) {
+					return date;
+				}
+				return candidate;
+			case Yearly:
+				candidate = date.plusYears(1);
+				while (excludedDates.contains(candidate) && candidate.isBefore(lastRepeatDate)) {
+					candidate = candidate.plusYears(1);
+				}
+				if (candidate.isAfter(lastRepeatDate)) {
+					return date;
+				}
+				return candidate;
+			default:
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+	
 }

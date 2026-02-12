@@ -3,26 +3,28 @@ package frontend.container;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.lang.invoke.MethodHandle;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
 import backend.dating.Day;
+import backend.interactivity.Functionality;
+import backend.interactivity.Interactible;
+import backend.interactivity.UserAction;
 import frontend.container.calendar.CalendarFrame;
 import frontend.container.calendar.CalendarFrame.View;
 import frontend.container.day.DayFrame;
 import frontend.container.entry.EntryFrame;
 import main.Main;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements Interactible {
 	
 	public DayFrame dayFrame;
 	public EntryFrame entryFrame;
-	public CalendarFrame calendarFrame;
-//	Array contains dayFrame, entryFrame, calendarFrame. gives order of addition to mainFrame. 
-//	TODO Test: If dayFrame is written, should change content of subframes
-//	Result: does NOT change!
-	
+	public CalendarFrame calendarFrame;	
 
 	
 	public MyPanel mainFramePanel;
@@ -55,7 +57,8 @@ public class MainFrame extends JFrame {
 		
 //		setup Layout
 		mainFramePanel.setupLayout();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		doOn(UserAction.WindowClose, Functionality.SaveAndExit);
 		
 //		create contents
 		calendarFrame = new CalendarFrame(Main.today, View.days);
@@ -81,6 +84,38 @@ public class MainFrame extends JFrame {
 	
 	public void update() {
 		mainFramePanel.update();
+	}
+	
+	@Override
+	public void doOn(UserAction userAction, Functionality function) {
+		MainFrame source = this;
+		MethodHandle handle;
+		try {
+			handle = resolveFunctionality(function, source);
+		} catch (NoSuchMethodException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		switch (userAction) {
+		default:
+			System.out.println("Interaction " + userAction + " not defined for class MyFrame.");
+			break;
+		case WindowClose:
+			addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent event) {
+					try {
+						handle.invoke(source);
+					} catch (Throwable e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+			break;
+		}
+		
 	}
 	
 }

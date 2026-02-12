@@ -13,6 +13,9 @@ import javax.swing.border.TitledBorder;
 import backend.dating.Day;
 import backend.entries.Entry;
 import backend.entries.EntryType;
+import backend.interactivity.Functionality;
+import backend.interactivity.UserAction;
+import frontend.components.EntryLabel;
 import frontend.components.MyLabel;
 import frontend.container.MainPanel;
 
@@ -48,22 +51,23 @@ public class DayMainPanel extends MainPanel {
 		JPanel simpleEntryPanel = new JPanel();
 		simpleEntryPanel.setLayout(new BoxLayout(simpleEntryPanel, BoxLayout.Y_AXIS));
 		for (Entry e : simpleEntries) {
-			MyLabel entryLabel = new MyLabel(e.toString());
+			EntryLabel entryLabel = new EntryLabel(e);
 //			TODO add doOns 
 			/*
 			 * -> mark selected entry, unmark prev selected entry (scope:DayMainPanel)
 			 * -> show selected Entry in EntryFrame
 			*/
+			entryLabel.doOn(UserAction.LeftPress, Functionality.ShowEntryInEntryFrame);
 			if (e.isCompleted) completedEntryPanel.add(entryLabel);
 			else simpleEntryPanel.add(entryLabel);
 		}
 		
 		
-//		put deadline into scrollable view
+//		put deadlines into scrollable view
 		JPanel deadlinePanel = new JPanel();
 		deadlinePanel.setLayout(new BoxLayout(deadlinePanel, BoxLayout.Y_AXIS));
 		for (Entry e : deadlines) {
-			MyLabel entryLabel = new MyLabel(e.toString());
+			EntryLabel entryLabel = new EntryLabel(e);
 //			TODO add doOns
 			/*
 			 * -> mark selected entry, unmark prev selected entry (scope:DayMainPanel)

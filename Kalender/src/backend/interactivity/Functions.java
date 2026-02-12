@@ -2,8 +2,6 @@ package backend.interactivity;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
-import java.awt.Window;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -13,8 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 import backend.dating.Day;
 import backend.entries.Entry;
@@ -22,72 +18,52 @@ import backend.entries.EntryType;
 import backend.entries.RepeatRate;
 import frontend.components.DayLabel;
 import frontend.components.DayLabel.Look;
+import frontend.components.EntryLabel;
 import frontend.components.MonthLabel;
 import frontend.components.MyButton;
 import frontend.components.MyCheckBox;
-import frontend.components.MyLabel;
 import frontend.components.YearLabel;
+import frontend.container.MainFrame;
 import frontend.container.calendar.CalendarFrame;
 import frontend.container.calendar.CalendarFrame.View;
 import frontend.container.calendar.CalendarMainPanel;
 import frontend.container.day.DayFrame;
 import frontend.container.entry.EntryAuthor;
+import frontend.container.entry.EntryFrame;
 import main.Main;
 
 public class Functions {
 	
-	
-//	Only viable for Containers containing a single component, else order of components is changed
-	private static void exchangeComponent(Component currComp, Component newComp) {
-		Container parent = currComp.getParent();
-		parent.remove(currComp);
-		parent.add(newComp);
-		parent.validate();
-		parent.repaint();
-	}
-	
-//	Hollows a container out and replaces its contents
-	private static void exchangeComponents(Container currCont, Container newCont) {
-		Component[] newComps = newCont.getComponents();
-		currCont.removeAll();
-		for (Component c : newComps) {
-			currCont.add(c);
+	public class MyFrameFunctions {
+		
+		public static void SaveAndExit(MainFrame source) {
+//			TODO serialize and save to file
+			
+			source.dispose();
+			System.exit(0);
 		}
-		currCont.validate();
-		currCont.repaint();
 	}
 	
 	public class CalendarButtonFunctions {
 		public static void CalendarViewGoUpToYears(MyButton source) {
-			LocalDate date = ((CalendarFrame) Main.mainFrame.calendarFrame).referenceDate;
-			CalendarFrame oldCalendar = (CalendarFrame) Main.mainFrame.calendarFrame;
+			LocalDate date = Main.mainFrame.calendarFrame.referenceDate;
 			CalendarFrame newCalendar = new CalendarFrame(date, View.years);
 			Main.mainFrame.calendarFrame = newCalendar;
-			exchangeComponent(oldCalendar, newCalendar);
+			Main.mainFrame.update();
 		}
 		
 		public static void CalendarViewGoUpToMonths(MyButton source) {
-			LocalDate date = ((CalendarFrame) Main.mainFrame.calendarFrame).referenceDate;
-			CalendarFrame oldCalendar = (CalendarFrame) Main.mainFrame.calendarFrame;
+			LocalDate date = Main.mainFrame.calendarFrame.referenceDate;
 			CalendarFrame newCalendar = new CalendarFrame(date, View.months);
 			Main.mainFrame.calendarFrame = newCalendar;
-			exchangeComponent(oldCalendar, newCalendar);
+			Main.mainFrame.update();
 		}
-//		TODO change condition from look=pressed to isSelected in DayFrame
+		
 		public static void GoToPrevMonth(MyButton source) {
-			LocalDate date = ((CalendarFrame) Main.mainFrame.calendarFrame).referenceDate.minusMonths(1);
-			CalendarFrame oldCalendar = (CalendarFrame) Main.mainFrame.calendarFrame;
+			LocalDate date = Main.mainFrame.calendarFrame.referenceDate.minusMonths(1);
 			CalendarFrame newCalendar = new CalendarFrame(date, View.days);
-//			keep pressed DayLabels pressed, if viewable from previous month
-			LocalDate pressedDate = null;
-			Component[] allOldChildren = oldCalendar.mainPanel.getComponents();
-			Component[] dlOldChildren = Arrays.copyOfRange(allOldChildren, 7, 48);
-			for (int i = 0; i < dlOldChildren.length; i++) {
-				if (((DayLabel)dlOldChildren[i]).currentLook == Look.pressed) {
-					pressedDate = ((DayLabel)dlOldChildren[i]).date;
-				}
-			}
-			if (pressedDate != null) {
+//			keep DayLabel of selected day pressed
+			LocalDate pressedDate = Main.mainFrame.dayFrame.displayedDay.date;
 				Component[] allNewChildren = newCalendar.mainPanel.getComponents();
 				Component[] dlNewChildren = Arrays.copyOfRange(allNewChildren, 7, 48);
 				for (int i = 0; i < dlNewChildren.length; i++) {
@@ -96,25 +72,16 @@ public class Functions {
 						((DayLabel)dlNewChildren[i]).showCurrentLook();
 					}
 				}
-			}
+
 			Main.mainFrame.calendarFrame = newCalendar;
-			exchangeComponent(oldCalendar, newCalendar);
+			Main.mainFrame.update();
 		}
-//		TODO change condition from look=pressed to isSelected in DayFrame
+		
 		public static void GoToNextMonth(MyButton source) {
-			LocalDate date = ((CalendarFrame) Main.mainFrame.calendarFrame).referenceDate.plusMonths(1);
-			CalendarFrame oldCalendar = (CalendarFrame) Main.mainFrame.calendarFrame;
+			LocalDate date = Main.mainFrame.calendarFrame.referenceDate.plusMonths(1);
 			CalendarFrame newCalendar = new CalendarFrame(date, View.days);
-//			keep pressed DayLabels pressed, if viewable from next month
-			LocalDate pressedDate = null;
-			Component[] allOldChildren = oldCalendar.mainPanel.getComponents();
-			Component[] dlOldChildren = Arrays.copyOfRange(allOldChildren, 7, 48);
-			for (int i = 0; i < dlOldChildren.length; i++) {
-				if (((DayLabel)dlOldChildren[i]).currentLook == Look.pressed) {
-					pressedDate = ((DayLabel)dlOldChildren[i]).date;
-				}
-			}
-			if (pressedDate != null) {
+//			keep DayLabel of selected day pressed
+			LocalDate pressedDate =  Main.mainFrame.dayFrame.displayedDay.date;
 				Component[] allNewChildren = newCalendar.mainPanel.getComponents();
 				Component[] dlNewChildren = Arrays.copyOfRange(allNewChildren, 7, 48);
 				for (int i = 0; i < dlNewChildren.length; i++) {
@@ -123,41 +90,36 @@ public class Functions {
 						((DayLabel)dlNewChildren[i]).showCurrentLook();
 					}
 				}
-			}
 			Main.mainFrame.calendarFrame = newCalendar;
-			exchangeComponent(oldCalendar, newCalendar);
+			Main.mainFrame.update();
 		}
 		
 		public static void GoToPrevYear(MyButton source) {
-			LocalDate date = ((CalendarFrame) Main.mainFrame.calendarFrame).referenceDate.minusYears(1);
-			CalendarFrame oldCalendar = (CalendarFrame) Main.mainFrame.calendarFrame;
+			LocalDate date = Main.mainFrame.calendarFrame.referenceDate.minusYears(1);
 			CalendarFrame newCalendar = new CalendarFrame(date, View.months);
 			Main.mainFrame.calendarFrame = newCalendar;
-			exchangeComponent(oldCalendar, newCalendar);
+			Main.mainFrame.update();
 		}
 		
 		public static void GoToNextYear(MyButton source) {
-			LocalDate date = ((CalendarFrame) Main.mainFrame.calendarFrame).referenceDate.plusYears(1);
-			CalendarFrame oldCalendar = (CalendarFrame) Main.mainFrame.calendarFrame;
+			LocalDate date = Main.mainFrame.calendarFrame.referenceDate.plusYears(1);
 			CalendarFrame newCalendar = new CalendarFrame(date, View.months);
 			Main.mainFrame.calendarFrame = newCalendar;
-			exchangeComponent(oldCalendar, newCalendar);
+			Main.mainFrame.update();
 		}
 		
 		public static void GoToPrevYears(MyButton source) {
-			LocalDate date = ((CalendarFrame) Main.mainFrame.calendarFrame).referenceDate.minusYears(15);
-			CalendarFrame oldCalendar = (CalendarFrame) Main.mainFrame.calendarFrame;
+			LocalDate date = Main.mainFrame.calendarFrame.referenceDate.minusYears(15);
 			CalendarFrame newCalendar = new CalendarFrame(date, View.years);
 			Main.mainFrame.calendarFrame = newCalendar;
-			exchangeComponent(oldCalendar, newCalendar);
+			Main.mainFrame.update();
 		}
 		
 		public static void GoToNextYears(MyButton source) {
-			LocalDate date = ((CalendarFrame) Main.mainFrame.calendarFrame).referenceDate.plusYears(15);
-			CalendarFrame oldCalendar = (CalendarFrame) Main.mainFrame.calendarFrame;
+			LocalDate date =  Main.mainFrame.calendarFrame.referenceDate.plusYears(15);
 			CalendarFrame newCalendar = new CalendarFrame(date, View.years);
 			Main.mainFrame.calendarFrame = newCalendar;
-			exchangeComponent(oldCalendar, newCalendar);
+			Main.mainFrame.update();
 		}
 	}
 	
@@ -202,19 +164,13 @@ public class Functions {
 			} else {
 				day = new Day(selectedDate);
 			}
-//			check if repeating entries hit the day and add them as a repeatingEntry (not repRoot)
+//			checks if repeating entries hit the day and adds them as a repeatingEntry if necessary
 			day.addRepeatingEntries();
 			if (day.entryList.size() > 0) {
 				Main.datesWithEntries.put(selectedDate, day);
 			}
-			for (Entry e: day.entryList) {
-				System.out.println(e.toString());
-			}
-//			switch contents of oldDayFrame with newDayFrame
-			DayFrame oldDayFrame = (DayFrame) Main.mainFrame.dayFrame;
-			DayFrame newDayFrame = new DayFrame(day);
-			exchangeComponents(oldDayFrame, newDayFrame);
-			((DayFrame) Main.mainFrame.dayFrame).displayedDay = day;
+			Main.mainFrame.dayFrame = new DayFrame(day);
+			Main.mainFrame.update();
 		}
 		
 	}
@@ -223,10 +179,9 @@ public class Functions {
 		
 		public static void CalendarViewGoDownToDays(MonthLabel ml) {
 			LocalDate date = ml.monthDate;
-			CalendarFrame oldCalendar = (CalendarFrame) Main.mainFrame.calendarFrame;
 			CalendarFrame newCalendar = new CalendarFrame(date, View.days);
 			Main.mainFrame.calendarFrame = newCalendar;
-			exchangeComponent(oldCalendar, newCalendar);
+			Main.mainFrame.update();
 		}
 		
 		public static void MonthLabelSetHighlighted(MonthLabel ml) {
@@ -246,10 +201,9 @@ public class Functions {
 	public class YearLabelFunctions {
 		public static void CalendarViewGoDownToMonths(YearLabel yl) {
 			LocalDate date = yl.year;
-			CalendarFrame oldCalendar = (CalendarFrame) Main.mainFrame.calendarFrame;
 			CalendarFrame newCalendar = new CalendarFrame(date, View.months);
 			Main.mainFrame.calendarFrame = newCalendar;
-			exchangeComponent(oldCalendar, newCalendar);
+			Main.mainFrame.update();
 		}
 		
 		public static void YearLabelSetHighlighted(YearLabel yl) {
@@ -274,6 +228,15 @@ public class Functions {
 			EntryAuthor author = new EntryAuthor(true);
 			author.display();
 		}
+	}
+	
+	public class EntryLabelFunctions {
+		
+		public static void ShowEntryInEntryFrame(EntryLabel source) {
+			Main.mainFrame.entryFrame = new EntryFrame(source.entry);
+			Main.mainFrame.update();
+		}
+		
 	}
 	
 	public class EntryAuthorFunctions {
@@ -360,7 +323,7 @@ public class Functions {
 		}
 		
 		public static void ConfirmAuthor(MyButton source) {
-//			TODO readout inputs and create new entry
+//			readout inputs and create new entry
 			List<String> errorMessages = new ArrayList<String>();
 			EntryAuthor parent = (EntryAuthor) source.getParent();
 			String name = parent.nameField.getText();
@@ -441,8 +404,6 @@ public class Functions {
 					break;
 				}
 //				repetition stop
-				
-				
 				if (parent.lastRepeatDateCheckBox.isSelected()) {
 					stops = true;
 					try {
@@ -453,7 +414,6 @@ public class Functions {
 					
 				}
 //				repetition exclusions
-				
 				boolean parsingErrorFlag = false;
 				if (parent.excludeDatesCheckBox.isSelected()) {
 					String exclusionString = parent.excludedDatesField.getText();
@@ -502,12 +462,10 @@ public class Functions {
 					day = new Day(date, entry);
 					Main.datesWithEntries.put(date, day);
 				}
-//				TODO update dayFrame only if displayedDay coincides with date of new Entry
-//				switch contents of oldDayFrame with newDayFrame
-				if (((DayFrame) Main.mainFrame.dayFrame).displayedDay.date.isEqual(date)) {
-					DayFrame oldDayFrame = (DayFrame) Main.mainFrame.dayFrame;
-					DayFrame newDayFrame = new DayFrame(day);
-					exchangeComponents(oldDayFrame, newDayFrame);
+//				update dayFrame only if displayedDay coincides with date of new Entry
+				if (Main.mainFrame.dayFrame.displayedDay.date.isEqual(date)) {
+					Main.mainFrame.dayFrame = new DayFrame(day);
+					Main.mainFrame.update();
 				}
 			}
 			

@@ -1,5 +1,6 @@
 package frontend.container.calendar;
 
+import java.awt.FlowLayout;
 import java.time.LocalDate;
 
 import frontend.components.MonthLabel;
@@ -16,6 +17,7 @@ public class CalendarButtonPanel extends ButtonPanel {
 	public CalendarButtonPanel(View view, LocalDate date) {
 		super();
 		referenceDate = date;
+		setLayout(new FlowLayout());
 		MyButton yearButton;
 		MyButton monthButton;
 		MyButton prevButton = new MyButton("<");

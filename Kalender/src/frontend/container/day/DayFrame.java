@@ -19,21 +19,9 @@ public class DayFrame extends SubFrame {
 		buttonPanel = new DayButtonPanel(displayedDay);
 		labelPanel = new DayLabelPanel(displayedDay);
 		mainPanel = new DayMainPanel(displayedDay);
-		add(labelPanel);
-		add(mainPanel);
-		add(buttonPanel);
-	}
-
-	@Override
-	public void update() {
-//		Array contains children in Order label, main, button. If changes occur, used as buffer to remove and readd chlidren
-		JPanel[] children = new JPanel[] {labelPanel, mainPanel, buttonPanel};
-		this.removeAll();
-		for (JPanel child : children) {
-			this.add(child);
-		}
-		this.revalidate();
-		this.repaint();
+		add(labelPanel, BorderLayout.NORTH);
+		add(mainPanel, BorderLayout.CENTER);
+		add(buttonPanel, BorderLayout.SOUTH);
 	}
 
 
