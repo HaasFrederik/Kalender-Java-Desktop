@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 import backend.dating.Day;
 import backend.entries.Entry;
+import backend.entries.EntryType;
 import backend.serialization.Serialize;
 import frontend.container.MainFrame;
 
@@ -20,9 +22,10 @@ public class Main {
 	
 	public static Map<LocalDate,Day> datesWithEntries = new HashMap<LocalDate,Day>();
 	public static List<Entry> repeatRootEntries = new ArrayList<Entry>();
+	public static Map<Entry,String> serializedEntries = new HashMap<Entry,String>();
 	
-	public static Path saveFolderPath = Paths.get("data");
-	public static Path saveFilePath = Paths.get("data/save.txt");
+	public static Path saveFolderPath = Paths.get("data/current");
+	public static Path saveFilePath = Paths.get("data/current/save.txt");
 	
 	public static MainFrame mainFrame;
 	public static LocalDate today = LocalDate.now();
@@ -34,9 +37,11 @@ public class Main {
 			System.out.println("hi");
 //			TODO open "Calendar.exe"
 		} else if (Files.exists(saveFilePath)){
-			Serialize.loadFromFile(saveFolderPath);
+			Serialize.loadFromFile(saveFilePath);
 //			TODO initialise Calendar with loaded data/open MainFrame
 		}
+		
+		
 		mainFrame = new MainFrame();
 		mainFrame.setVisible(true);
 	}

@@ -1,6 +1,7 @@
 package frontend.container.entry;
 
 import java.awt.FlowLayout;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JLabel;
 
@@ -18,7 +19,7 @@ public class EntryLabelPanel extends LabelPanel {
 //		if entry non-null
 		if (entry != null) {
 //			-> add label
-			entryLabel = new JLabel(entry.toString());
+			entryLabel = new JLabel(entry.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) + " : " + entry.toString());
 			add(entryLabel);
 		}
 //		if entry null

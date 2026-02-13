@@ -28,15 +28,19 @@ public class Day {
 			if (repRoot.date.isBefore(date)) {
 //				check: if date has been excluded; if not continue on
 				if (!repRoot.excludedDates.contains(date)) {
-//						Check: if repeat does not stop || (if repeat stops && if date is before or equal to stop date); if yes continue on
+//					Check: if repeat does not stop || (if repeat stops && if date is before or equal to stop date); if yes continue on
 					if (!repRoot.stopsRepeat || (repRoot.stopsRepeat && (date.isBefore(repRoot.lastRepeatDate)) || (date.isEqual(repRoot.lastRepeatDate)))) {
-//							check: if repeat hits date; if yes continue on
+//						check: if repeat hits date; if yes continue on
 						if (repRoot.repeatRate.checkForRepeat(repRoot.date, date)) {
-//								check: if repeat has already been added; if not create entry, add and return
+//							check: if repeat has already been added; if not create entry
 							if (!repRoot.knownRepeats.containsKey(date)) {
 								Entry rep = new Entry(date, repRoot);
+//								check: if repeat is known to be completed; yes -> set isCompleted to true
+								if (repRoot.completedDates.contains(date)) {
+									rep.isCompleted = true;
+								}
+//								add entry to day
 								entryList.add(rep);
-								return;
 							}
 						}
 					}

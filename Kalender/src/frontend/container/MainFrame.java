@@ -20,7 +20,7 @@ import frontend.container.day.DayFrame;
 import frontend.container.entry.EntryFrame;
 import main.Main;
 
-public class MainFrame extends JFrame implements Interactible {
+public class MainFrame extends MyFrame {
 	
 	public DayFrame dayFrame;
 	public EntryFrame entryFrame;
@@ -84,38 +84,6 @@ public class MainFrame extends JFrame implements Interactible {
 	
 	public void update() {
 		mainFramePanel.update();
-	}
-	
-	@Override
-	public void doOn(UserAction userAction, Functionality function) {
-		MainFrame source = this;
-		MethodHandle handle;
-		try {
-			handle = resolveFunctionality(function, source);
-		} catch (NoSuchMethodException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return;
-		}
-		switch (userAction) {
-		default:
-			System.out.println("Interaction " + userAction + " not defined for class MyFrame.");
-			break;
-		case WindowClose:
-			addWindowListener(new WindowAdapter() {
-				@Override
-				public void windowClosing(WindowEvent event) {
-					try {
-						handle.invoke(source);
-					} catch (Throwable e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			});
-			break;
-		}
-		
 	}
 	
 }

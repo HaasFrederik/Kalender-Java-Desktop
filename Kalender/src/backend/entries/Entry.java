@@ -26,6 +26,7 @@ public class Entry {
 	public boolean stopsRepeat;
 	public LocalDate lastRepeatDate;
 	public List<LocalDate> excludedDates = new ArrayList<LocalDate>(); 
+	public List<LocalDate> completedDates = new ArrayList<LocalDate>();
 	
 //	fields not affecting  serialisation
 	public Entry repeatRoot;
@@ -53,6 +54,7 @@ public class Entry {
 		isRepeating = false;
 		isRepeatRoot = false;
 		repeatRootDate = null;
+		repeatRoot = null;
 		repeatRate = null;
 		stopsRepeat = false;
 		lastRepeatDate = null;
@@ -75,6 +77,7 @@ public class Entry {
 		isRepeating = repeats;
 		isRepeatRoot = isRepRoot;
 		repeatRootDate = date;
+		repeatRoot = this;
 		repeatRate = rate;
 		stopsRepeat = stops;
 		lastRepeatDate = lastDate;
@@ -94,31 +97,40 @@ public class Entry {
 		isCompleted = false;
 		isRepeating = true;
 		isRepeatRoot = false;
+		repeatRate = repRoot.repeatRate;
+		repeatRoot = repRoot;
 		repeatRootDate = repRoot.date;	
+		excludedDates = repRoot.excludedDates;
 		if (!repRoot.knownRepeats.containsKey(date)) {
 			repRoot.knownRepeats.put(date, this);
 		}
 		knownRepeats = repRoot.knownRepeats;
+		completedDates = repRoot.completedDates;
+		stopsRepeat = repRoot.stopsRepeat;
+		lastRepeatDate = repRoot.lastRepeatDate;
 	}
 	
-	public Entry(LocalDate date, LocalTime start, LocalTime end, EntryType type, String name, String descr,
-			boolean repeats, boolean isRepRoot, LocalDate repRoot) {
-		this.date = date;
-		this.start = start;
-		this.end = end;
-		entryType = type;
-		this.name = name;
-		description = descr;
-		isCompleted = false;
-		
-		isRepeating = repeats;
-		isRepeatRoot = isRepRoot;
-		repeatRootDate = repRoot;
-	}
+//	public Entry(LocalDate date, LocalTime start, LocalTime end, EntryType type, String name, String descr,
+//			boolean repeats, boolean isRepRoot, LocalDate repRoot) {
+//		this.date = date;
+//		this.start = start;
+//		this.end = end;
+//		entryType = type;
+//		this.name = name;
+//		description = descr;
+//		isCompleted = false;
+//		
+//		isRepeating = repeats;
+//		isRepeatRoot = isRepRoot;
+//		repeatRootDate = repRoot;
+//	}
 	
 //	recreates Entry from output of Entry.toString()
 	public Entry(String serializedEntry) {
 		String[] fields = serializedEntry.split(Serialize.listSeparator);
+		for (int i = 0; i < fields.length; i++) {
+			fields[i] = fields[i].trim();
+		}
 		date = LocalDate.parse(fields[0], Serialize.dateFormatter);
 		start = LocalTime.parse(fields[1], Serialize.timeFormatter);
 		end = LocalTime.parse(fields[2], Serialize.timeFormatter);
@@ -157,7 +169,7 @@ public class Entry {
 				break;
 			}
 			stopsRepeat = Boolean.parseBoolean(fields[9]);
-			lastRepeatDate = LocalDate.parse(fields[10], Serialize.dateFormatter);
+			if (fields[10].length() > 0) lastRepeatDate = LocalDate.parse(fields[10], Serialize.dateFormatter);
 			if (fields[11].length() > 0) {
 				String[] exclusions = fields[11].split(Serialize.sublistSeparator);
 				excludedDates = new ArrayList<LocalDate>();
@@ -165,19 +177,28 @@ public class Entry {
 					excludedDates.add(LocalDate.parse(excl,Serialize.dateFormatter));
 				}
 			} else excludedDates = new ArrayList<LocalDate>();
+			if (fields[12].length() > 0) {
+				String[] completions = fields[12].split(Serialize.sublistSeparator);
+				completedDates = new ArrayList<LocalDate>();
+				for (String compl : completions) {
+					completedDates.add(LocalDate.parse(compl, Serialize.dateFormatter));
+				}
+			} else completedDates = new ArrayList<LocalDate>();
 		} else {
 			isRepeating = false;
 			repeatRootDate = null;
 			repeatRate = null;
 			stopsRepeat = false;
 			lastRepeatDate = null;
-			excludedDates = null;
+			excludedDates = new ArrayList<LocalDate>();
+			completedDates = new ArrayList<LocalDate>();
 		}
 		
 		
 	}
 	
 	public String serialize() {
+//		returns serialisation of entry; if isRepeating==true && isRepRoot==false returns null or empty String
 		String dateString = date.format(Serialize.dateFormatter);
 		String timeStartString = start.format(Serialize.timeFormatter);
 		String timeEndString = end.format(Serialize.timeFormatter);
@@ -186,11 +207,13 @@ public class Entry {
 		if (isCompleted) completeString = "true";
 		else completeString = "false";
 		
+//		whitespace necessary for split-operator during deserialisation
 		String repRootString;
-		String repRateString = "";
-		String stopsRepString = "";
-		String lastRepDateString = "";
+		String repRateString = " ";
+		String stopsRepString = " ";
+		String lastRepDateString = " ";
 		String excludedDatesString = "";
+		String completedDatesString = "";
 		
 		
 		if (isRepeatRoot) {
@@ -210,10 +233,28 @@ public class Entry {
 						excludedDatesString += Serialize.sublistSeparator;
 					}
 				}
-			}
+			} else excludedDatesString = " ";
+			if (!completedDates.isEmpty()) {
+				int lastIndex = completedDates.size()-1;
+				for (LocalDate completed : completedDates) {
+					completedDatesString += completed.format(Serialize.dateFormatter);
+					// -> add sublistSeparator only if not last element
+					if (completedDates.indexOf(completed) < lastIndex) {
+						completedDatesString += Serialize.sublistSeparator;
+					}
+				}
+			} else completedDatesString = " ";
 			
 		}
-		else repRootString = "false";
+//		is not repRoot, but is repeating (generated entry)
+		else if (isRepeating) {
+			return "";
+		} else {
+//			is not repeating
+			repRootString = "false";
+			excludedDatesString = " ";
+			completedDatesString = " ";
+		}
 		
 		return  dateString + Serialize.listSeparator 
 			+ timeStartString + Serialize.listSeparator
@@ -225,8 +266,9 @@ public class Entry {
 			+ repRootString + Serialize.listSeparator
 			+ repRateString + Serialize.listSeparator
 			+ stopsRepString + Serialize.listSeparator
-			+ lastRepDateString +Serialize.listSeparator
-			+ excludedDatesString;
+			+ lastRepDateString + Serialize.listSeparator
+			+ excludedDatesString + Serialize.listSeparator
+			+ completedDatesString;
 	}
 	
 	
@@ -239,60 +281,61 @@ public class Entry {
 		return this.entryType.type + " " + this.name + " " + timeString;
 	}
 	
+//	if there is no next date returns date of entry
 	public LocalDate nextRepeatDate() {
-		LocalDate candidate;
+		LocalDate candidate = date;
 		if (isRepeating) {
 			switch(repeatRate) {
 			case Biweekly:
-				candidate = date.plusWeeks(2);
-				while (excludedDates.contains(candidate) && candidate.isBefore(lastRepeatDate)) {
+				candidate = candidate.plusWeeks(2);
+				while (excludedDates.contains(candidate) && (lastRepeatDate == null || candidate.isBefore(lastRepeatDate))) {
 					candidate = candidate.plusWeeks(2);
 				}
-				if (candidate.isAfter(lastRepeatDate)) {
+				if (lastRepeatDate != null && candidate.isAfter(lastRepeatDate)) {
 					return date;
 				}
 				return candidate;
 			case Daily:
-				candidate = date.plusDays(1);
-				while (excludedDates.contains(candidate) && candidate.isBefore(lastRepeatDate)) {
+				candidate = candidate.plusDays(1);				
+				while (excludedDates.contains(candidate) && (lastRepeatDate == null || candidate.isBefore(lastRepeatDate))) {
 					candidate = candidate.plusDays(1);
 				}
-				if (candidate.isAfter(lastRepeatDate)) {
+				if (lastRepeatDate != null && candidate.isAfter(lastRepeatDate)) {
 					return date;
 				}
 				return candidate;
 			case Monthly:
-				candidate = date.plusMonths(1);
-				while (excludedDates.contains(candidate) && candidate.isBefore(lastRepeatDate)) {
+				candidate = candidate.plusMonths(1);
+				while (excludedDates.contains(candidate) && (lastRepeatDate == null || candidate.isBefore(lastRepeatDate))) {
 					candidate = candidate.plusMonths(1);
 				}
-				if (candidate.isAfter(lastRepeatDate)) {
+				if (lastRepeatDate != null && candidate.isAfter(lastRepeatDate)) {
 					return date;
 				}
 				return candidate;
 			case Weekly:
-				candidate = date.plusWeeks(1);
-				while (excludedDates.contains(candidate) && candidate.isBefore(lastRepeatDate)) {
+				candidate = candidate.plusWeeks(1);
+				while (excludedDates.contains(candidate) && (lastRepeatDate == null || candidate.isBefore(lastRepeatDate))) {
 					candidate = candidate.plusWeeks(1);
 				}
-				if (candidate.isAfter(lastRepeatDate)) {
+				if (lastRepeatDate != null && candidate.isAfter(lastRepeatDate)) {
 					return date;
 				}
 				return candidate;
 			case Yearly:
-				candidate = date.plusYears(1);
-				while (excludedDates.contains(candidate) && candidate.isBefore(lastRepeatDate)) {
+				candidate = candidate.plusYears(1);
+				while (excludedDates.contains(candidate) && (lastRepeatDate == null || candidate.isBefore(lastRepeatDate))) {
 					candidate = candidate.plusYears(1);
 				}
-				if (candidate.isAfter(lastRepeatDate)) {
+				if (lastRepeatDate != null && candidate.isAfter(lastRepeatDate)) {
 					return date;
 				}
 				return candidate;
 			default:
-				return null;
+				return date;
 			}
 		} else {
-			return null;
+			return date;
 		}
 	}
 	

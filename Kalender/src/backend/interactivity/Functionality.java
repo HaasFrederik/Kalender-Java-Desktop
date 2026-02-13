@@ -38,8 +38,14 @@ public enum Functionality {
 //	******* EntryLabels *******
 	ShowEntryInEntryFrame(Functions.EntryLabelFunctions.class, "ShowEntryInEntryFrame"),
 	
+//	******* EntryButtons *******
+	CloseEntry(Functions.EntryButtonFunctions.class, "CloseEntry"),
+	CompleteEntry(Functions.EntryButtonFunctions.class, "CompleteEntry"),
+	IncompleteEntry(Functions.EntryButtonFunctions.class, "IncompleteEntry"),
+	EditEntry(Functions.EntryButtonFunctions.class, "EditEntry"),
 	
-//	******* EntryAuthorComponents *******
+	
+//	******* EntryAuthor *******
 	SimpleEntrySelected(Functions.EntryAuthorFunctions.class, "SimpleEntrySelected"),
 	DeadlineSelected(Functions.EntryAuthorFunctions.class, "DeadlineSelected"),
 	TimeRangeSelected(Functions.EntryAuthorFunctions.class, "TimeRangeSelected"),
@@ -51,8 +57,15 @@ public enum Functionality {
 	ExcludeDatesSelected(Functions.EntryAuthorFunctions.class, "ExcludeDatesSelected"),
 	ExcludeDatesDeselected(Functions.EntryAuthorFunctions.class, "ExcludeDatesDeselected"),
 	CancelAuthor(Functions.EntryAuthorFunctions.class, "CancelAuthor"),
+	CloseAuthor(Functions.EntryAuthorFunctions.class, "CloseAuthor"),
 	ConfirmAuthor(Functions.EntryAuthorFunctions.class, "ConfirmAuthor"),
-	ConfirmEdit(Functions.EntryAuthorFunctions.class, "ConfirmEdit");
+	ConfirmEdit(Functions.EntryAuthorFunctions.class, "ConfirmEdit"),
+	
+//	******* EntryEditDialog *******
+	CancelEdit(Functions.EntryEditDiaolgFunctions.class, "CancelEdit"),
+	SelectOptionOne(Functions.EntryEditDiaolgFunctions.class, "SelectOptionOne"),
+	SelectOptionTwo(Functions.EntryEditDiaolgFunctions.class, "SelectOptionTwo"),
+	CloseDialog(Functions.EntryEditDiaolgFunctions.class, "CloseDialog"),
 	;
 	
 	public final Class<?> CLASS;

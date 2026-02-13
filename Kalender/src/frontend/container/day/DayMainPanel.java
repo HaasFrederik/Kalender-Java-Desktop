@@ -47,6 +47,7 @@ public class DayMainPanel extends MainPanel {
 		}
 //		Panel for completed entries, regardless of type
 		JPanel completedEntryPanel = new JPanel();
+		completedEntryPanel.setLayout(new BoxLayout(completedEntryPanel, BoxLayout.Y_AXIS));
 //		put simpleEntries into scrollable view
 		JPanel simpleEntryPanel = new JPanel();
 		simpleEntryPanel.setLayout(new BoxLayout(simpleEntryPanel, BoxLayout.Y_AXIS));
@@ -73,6 +74,7 @@ public class DayMainPanel extends MainPanel {
 			 * -> mark selected entry, unmark prev selected entry (scope:DayMainPanel)
 			 * -> show selected Entry in EntryFrame
 			*/
+			entryLabel.doOn(UserAction.LeftPress, Functionality.ShowEntryInEntryFrame);
 			if (e.isCompleted) completedEntryPanel.add(entryLabel);
 			else deadlinePanel.add(entryLabel);
 		}
