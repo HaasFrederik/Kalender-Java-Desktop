@@ -702,7 +702,7 @@ public class Functions {
 
 	}
 	
-	public class EntryEditDiaolgFunctions {
+	public class EntryEditDialogFunctions {
 		
 		public static void CancelEdit(MyButton source) {
 			EntryEditDialog parent = (EntryEditDialog) source.getParent();
@@ -732,7 +732,31 @@ public class Functions {
 		}
 
 		public static void DeleteEntry(MyButton source) {
-
+			Entry entry = Main.mainFrame.entryFrame.displayedEntry;
+			if (entry.isRepeating) {
+				if (entry.isRepeatRoot) {
+//					remove self and all repetitions
+					Main.repeatRootEntries.remove(entry);
+					Main.serializedEntries.remove(entry);
+					Main.datesWithEntries.get(entry.date).entryList.remove(entry);
+					for (LocalDate knownDate : entry.knownRepeats.keySet()) {
+						Main.datesWithEntries.get(knownDate).entryList.remove(entry.knownRepeats.get(knownDate));
+					}
+				} else {
+//					remove this entry and add to exclusionlist of repRoot
+					Main.datesWithEntries.get(entry.date).entryList.remove(entry);
+					entry.repeatRoot.excludedDates.add(entry.date);
+				}
+			} else {
+//				entry is not repeating
+//				remove entry
+				Main.datesWithEntries.get(entry.date).entryList.remove(entry);
+				Main.serializedEntries.remove(entry);
+			}
+//			update mainFrame
+			Main.mainFrame.entryFrame = new EntryFrame(null);
+			Main.mainFrame.dayFrame = new DayFrame(Main.mainFrame.dayFrame.displayedDay);
+			Main.mainFrame.update();
 		}
 
 		public static void CompleteEntry(MyButton source) {

@@ -43,6 +43,7 @@ public enum Functionality {
 	CompleteEntry(Functions.EntryButtonFunctions.class, "CompleteEntry"),
 	IncompleteEntry(Functions.EntryButtonFunctions.class, "IncompleteEntry"),
 	EditEntry(Functions.EntryButtonFunctions.class, "EditEntry"),
+	DeleteEntry(Functions.EntryButtonFunctions.class, "DeleteEntry"),
 	
 	
 //	******* EntryAuthor *******
@@ -62,10 +63,10 @@ public enum Functionality {
 	ConfirmEdit(Functions.EntryAuthorFunctions.class, "ConfirmEdit"),
 	
 //	******* EntryEditDialog *******
-	CancelEdit(Functions.EntryEditDiaolgFunctions.class, "CancelEdit"),
-	SelectOptionOne(Functions.EntryEditDiaolgFunctions.class, "SelectOptionOne"),
-	SelectOptionTwo(Functions.EntryEditDiaolgFunctions.class, "SelectOptionTwo"),
-	CloseDialog(Functions.EntryEditDiaolgFunctions.class, "CloseDialog"),
+	CancelEdit(Functions.EntryEditDialogFunctions.class, "CancelEdit"),
+	SelectOptionOne(Functions.EntryEditDialogFunctions.class, "SelectOptionOne"),
+	SelectOptionTwo(Functions.EntryEditDialogFunctions.class, "SelectOptionTwo"),
+	CloseDialog(Functions.EntryEditDialogFunctions.class, "CloseDialog"),
 	;
 	
 	public final Class<?> CLASS;

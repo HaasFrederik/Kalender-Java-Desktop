@@ -34,6 +34,7 @@ public class EntryButtonPanel extends ButtonPanel {
 		if (entry != null) {
 //			 -> add functionalities to buttons
 			editButton.doOn(UserAction.LeftClick, Functionality.EditEntry);
+			deleteButton.doOn(UserAction.LeftClick, Functionality.DeleteEntry);
 			if (!entry.isCompleted) {
 				completionButton.doOn(UserAction.LeftClick, Functionality.CompleteEntry);
 			} else {
